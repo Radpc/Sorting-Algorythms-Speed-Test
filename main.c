@@ -6,9 +6,9 @@
 //Bibliotecas próprias
 
 
-#include "organizers.h"
-#include "arrays.h"
-#include "utilities.h"
+#include "bibliotecas/organizers.h"
+#include "bibliotecas/arrays.h"
+#include "bibliotecas/utilities.h"
 
 
 
@@ -34,6 +34,7 @@ void main(){
 	int i;
 	char answer;
 	int continuation;
+	int debug;
 	int *array;
 	int *arrayCopy;
 	
