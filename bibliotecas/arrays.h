@@ -1,5 +1,4 @@
 #include <stdio.h>
-
 //Copy array values into another
 
 void copyArray(int array1[], int array2 [],int size){
@@ -49,11 +48,11 @@ int highestArray(int array[], int size){
 
 int avgArray(int array[], int size){
 	int i;
-	float avg;
+	int avg;
 	avg = 0;
 	
 	for(i=0;i<size;i++){
-		avg =+ array[i];		
+		avg = avg + array[i];		
 	}
 	
 	avg = avg/size;

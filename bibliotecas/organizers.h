@@ -1,3 +1,4 @@
+
 //Método bolha
 void bolha(int vet[],int tam){
 	int i,k,n;
@@ -33,36 +34,35 @@ void insDireta(int vet[], int tam){
 
 //Método QuickSort
 
-
-#include <stdio.h>
-
-void quickSort(int *a, int left, int right) {
-    int i, j, x, y;
-     
-    i = left;
-    j = right;
-    x = a[(left + right) / 2];
-     
-    while(i <= j) {
-        while(a[i] < x && i < right) {
-            i++;
-        }
-        while(a[j] > x && j > left) {
-            j--;
-        }
-        if(i <= j) {
-            y = a[i];
-            a[i] = a[j];
-            a[j] = y;
-            i++;
-            j--;
-        }
-    }
-     
-    if(j > left) {
-        quickSort(a, left, j);
-    }
-    if(i < right) {
-        quickSort(a, i, right);
-    }
+int partition( int a[], int l, int r) {
+   int pivot, i, j, t;
+   pivot = a[l];
+   i = l; j = r+1;
+		
+   while( 1)
+   {
+   	do ++i; while( a[i] <= pivot && i <= r );
+   	do --j; while( a[j] > pivot );
+   	if( i >= j ) break;
+   	t = a[i]; a[i] = a[j]; a[j] = t;
+   }
+   t = a[l]; a[l] = a[j]; a[j] = t;
+   return j;
 }
+
+void quickSort( int a[], int l, int r)
+{
+   int j;
+
+   if( l < r ) 
+   {
+   	// divide and conquer
+        j = partition( a, l, r);
+       quickSort( a, l, j-1);
+       quickSort( a, j+1, r);
+   }
+	
+}
+
+
+
