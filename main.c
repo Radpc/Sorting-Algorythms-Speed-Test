@@ -1,24 +1,20 @@
-//Bibliotecas comuns
+﻿//Bibliotecas comuns
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
 
 //Bibliotecas próprias
-
-
 #include "bibliotecas/organizers.h"
 #include "bibliotecas/arrays.h"
 #include "bibliotecas/utilities.h"
 
-
-
 //Define's
-#define SIZE 100000
+#define SIZE 10000
 #define TIMES 30
 
 void main(){
 	
-	//Final
+	//Matrizes para guardar o tempo de cada iteração
 	int * tempo_bolha = malloc(sizeof(int) * TIMES);
 	int * tempo_insDireta = malloc(sizeof(int) * TIMES);;
 	int * tempo_quicksort = malloc(sizeof(int) * TIMES);;
@@ -31,19 +27,19 @@ void main(){
 	int converted;
 	
 	//Declarações de variáveis
-	int i;
-	char answer;
-	int continuation;
-	int * array = malloc(sizeof(int) * SIZE);
-	int * arrayCopy = malloc(sizeof(int) * SIZE); 
+	int i; 													//Iteração
+	char answer;											//Resposta da UI
+	int ui;													//Manter a UI
+	int * array = malloc(sizeof(int) * SIZE);				//Vetor original
+	int * arrayCopy = malloc(sizeof(int) * SIZE); 			//Vetor cópia para testes
 	
-	//Medias
+	//Medias finais
 	int mBolha = 0;
 	int mInsDireta = 0;
 	int mQuicksort = 0;
 	
 	//User friendly?
-	continuation = 1;
+	ui = 1;
 		
 	//For loop para as vezes (turn) que os 3 algoritmos irao rodar no mesmo vetor
 	for(turn=0;turn<TIMES;turn++){
@@ -52,21 +48,19 @@ void main(){
 		srand(time(NULL));
 		
 		//Pergunta de User Interface
-		if(continuation){	
-			printf("\nA seguir, o vetor numero[%d] com %d bytes. Ele sera preenchido com valores entre 0 e %d. Pressione enter.\n",turn,SIZE*8,RAND_MAX);
+		if(ui){	
+			printf("\nA seguir, o vetor [%d] com %d bytes. Ele sera preenchido com valores entre 0 e %d. Pressione enter.\n",turn+1,SIZE*8,RAND_MAX);
 			pressButton();		
 		}
 		
 		//Preencher o vetor
-		
 		for(i=0;i<SIZE;i++){
-			
 			array[i] = rand();
 		}
 		printf("\n[Novo vetor] -- %d\n",turn+1);
 	
 		//Verificação dos primeiros elementos
-		if(continuation){
+		if(ui){
 			printf("Deseja verificar os 10 primeiros numeros? (y/n): ");
 			scanf(" %c",&answer);
 			if((answer == 'y') || (answer == 'Y')){
@@ -78,7 +72,7 @@ void main(){
 				printf("\nDeseja pular os textos? (y/n): ");
 				scanf(" %c",&answer);
 				if((answer == 'y') || (answer == 'Y')){
-						continuation = 0;					
+						ui = 0;					
 				}
 				
 			}
@@ -98,11 +92,11 @@ void main(){
 		end = clock();
 		time_spent = difftime(end,begin) ;
 		converted = time_spent; //Transforms double variable into MiliSeconds INTEGERS
-		printf("%d Milisegundos..\n",converted);
+		printf("%d mSeg..\n",converted);
 		
 		
 		//Pergunta para o usuario sobre checar o resultado
-		if(continuation){
+		if(ui){
 			printf("Quer ver os primeiros numeros da organizacao?(y/n): ");
 			scanf(" %c",&answer);
 			if((answer == 'y') || (answer == 'Y')){
@@ -133,10 +127,10 @@ void main(){
 		end = clock();
 		time_spent = difftime(end,begin) ;
 		converted = time_spent; //Transforms double variable into MiliSeconds INTEGERS
-		printf("%d Milisegundos..\n",converted);
+		printf("%d mSeg..\n",converted);
 		
 		//Pergunta para o usuario sobre checar o resultado
-		if(continuation){
+		if(ui){
 			printf("Quer ver os primeiros numeros da organizacao?(y/n): ");
 			scanf(" %c",&answer);
 			if((answer == 'y') || (answer == 'Y')){
@@ -159,16 +153,16 @@ void main(){
 		begin = clock();
 		
 		//Rodar o código
-		quickSort(arrayCopy,0,SIZE);
+		quickSort(arrayCopy,0,SIZE-1);
 		
 		//Checar o tempo /2
 		end = clock();
 		time_spent = difftime(end,begin) ;
 		converted = time_spent; //Transforms double variable into MiliSeconds INTEGERS
-		printf("%d Milisegundos..\n",converted);
+		printf("%d mSeg..\n",converted);
 		
 		//Pergunta para o usuario sobre checar o resultado
-		if(continuation){
+		if(ui){
 			printf("Quer ver os primeiros numeros da organizacao?(y/n): ");
 			scanf(" %c",&answer);
 			if((answer == 'y') || (answer == 'Y')){
@@ -192,6 +186,7 @@ void main(){
 	FILE *arq;
 	arq = fopen("Resultado.txt","w"); //MUDA PRA INI DPS MATHEUS
 	
+	
 	//Calcula a média do resultado
 	for(i=0;i<TIMES;i++){
 		mBolha = mBolha + tempo_bolha[i];
@@ -199,7 +194,10 @@ void main(){
 		mQuicksort = mQuicksort + tempo_quicksort[i];
 	}
 	
-	//Opçoes de resultado
+	///Opçoes de resultado
+	
+	//Imprime no arquivo os parametros para o calculo
+		fprintf(arq,"Para %d vetores diferentes de %d Bytes, o resultado é:\n",TIMES,SIZE*(sizeof(int)));
 	
 	//Imprime no arquivo a média dos tempos das ordenações
 		fprintf(arq,"Tempo medio do bolha - [%d]miliSeg | Tempo medio do insercaoDireta - [%d]miliSeg  | Tempo medio do quicksort - [%d]miliSeg\n\n",mBolha/TIMES,mInsDireta/TIMES,mQuicksort/TIMES);	
@@ -216,7 +214,7 @@ void main(){
 	//Caso tenha aberto o arquivo, feche-o
 	fclose(arq); 
 
-	
+	//Esperar o input do usuario e liberar memoria
 	pressButton();
 	free(array);
 	free(arrayCopy); 
